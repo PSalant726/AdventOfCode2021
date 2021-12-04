@@ -22,6 +22,29 @@ func binToDec(number string) int64 {
 	return result
 }
 
+func partitionByPositionVal(inputs []string, position int) ([]string, []string) {
+	mostCommon := []string{}
+	leastCommon := []string{}
+
+	var positionTotal int
+	for _, input := range inputs {
+		inputInts := positionInts(input)
+		positionTotal += inputInts[position]
+
+		if inputInts[position] == 1 {
+			mostCommon = append(mostCommon, input)
+		} else {
+			leastCommon = append(leastCommon, input)
+		}
+	}
+
+	if positionTotal < len(inputs)/2 {
+		mostCommon, leastCommon = leastCommon, mostCommon
+	}
+
+	return mostCommon, leastCommon
+}
+
 func positionInts(input string) []int {
 	inputArr := strings.Split(input, "")
 	retArr := make([]int, len(inputArr))

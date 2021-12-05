@@ -15,6 +15,32 @@ func NewBoard() *Board {
 	return board
 }
 
+func (b *Board) DrawDiagonal(startX, startY, endX, endY int) {
+	y := startY
+	switch {
+	case startX <= endX && startY <= endY:
+		for i := startX; i <= endX; i++ {
+			b.plot(i, y)
+			y++
+		}
+	case startX <= endX && startY > endY:
+		for i := startX; i <= endX; i++ {
+			b.plot(i, y)
+			y--
+		}
+	case startX > endX && startY <= endY:
+		for i := startX; i >= endX; i-- {
+			b.plot(i, y)
+			y++
+		}
+	default:
+		for i := startX; i >= endX; i-- {
+			b.plot(i, y)
+			y--
+		}
+	}
+}
+
 func (b *Board) DrawHorizontal(startX, startY, endX int) {
 	if startX <= endX {
 		for i := startX; i <= endX; i++ {

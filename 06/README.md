@@ -61,3 +61,17 @@ Find a way to simulate lanternfish. **How many lanternfish would there be after 
 
   `363101`
 </details>
+
+## Part 2
+
+Suppose the lanternfish live forever and have unlimited food and space. Would they take over the entire ocean?
+
+After 256 days in the example above, there would be a total of **`26984457539`** lanternfish!
+
+**How many lanternfish would there be after 256 days?**
+
+<details>
+  <summary>The answer is...</summary>
+
+  `1644286074024`
+</details>

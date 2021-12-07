@@ -2,22 +2,27 @@ package main
 
 type Board struct {
 	Bingo   bool
-	Columns [][]int
-	Rows    [][]int
-	Values  map[int]struct{}
+	columns rowsOrColumns
+	rows    rowsOrColumns
+	values  map[int]struct{}
+}
+
+type rowsOrColumns struct {
+	values [][]int
 }
 
 func NewBoard(numbers [][]int) *Board {
+	boardLength := len(numbers)
 	board := &Board{
-		Columns: make([][]int, 5),
-		Rows:    numbers,
-		Values:  make(map[int]struct{}, 25),
+		columns: rowsOrColumns{make([][]int, boardLength)},
+		rows:    rowsOrColumns{numbers},
+		values:  make(map[int]struct{}, boardLength*boardLength),
 	}
 
 	for _, row := range numbers {
 		for j, num := range row {
-			board.Values[num] = struct{}{}
-			board.Columns[j] = append(board.Columns[j], num)
+			board.values[num] = struct{}{}
+			board.columns.values[j] = append(board.columns.values[j], num)
 		}
 	}
 
@@ -25,44 +30,38 @@ func NewBoard(numbers [][]int) *Board {
 }
 
 func (b *Board) Mark(drawn int) {
-	delete(b.Values, drawn)
-
-	for i, row := range b.Rows {
-		for j, number := range row {
-			if number == drawn {
-				b.Rows[i] = remove(row, j)
-
-				if len(b.Rows[i]) == 0 {
-					b.Bingo = true
-				}
-
-				break
-			}
-		}
+	if _, ok := b.values[drawn]; !ok {
+		return
 	}
 
-	for i, column := range b.Columns {
-		for j, number := range column {
-			if number == drawn {
-				b.Columns[i] = remove(column, j)
-
-				if len(b.Columns[i]) == 0 {
-					b.Bingo = true
-				}
-
-				break
-			}
-		}
-	}
+	delete(b.values, drawn)
+	b.mark(drawn, b.rows)
+	b.mark(drawn, b.columns)
 }
 
 func (b Board) Score(drawn int) int {
 	var sum int
-	for number := range b.Values {
+	for number := range b.values {
 		sum += number
 	}
 
 	return sum * drawn
+}
+
+func (b *Board) mark(drawn int, rowsOrColumns rowsOrColumns) {
+	for i, rowOrColumn := range rowsOrColumns.values {
+		for j, number := range rowOrColumn {
+			if number == drawn {
+				rowsOrColumns.values[i] = remove(rowOrColumn, j)
+
+				if len(rowsOrColumns.values[i]) == 0 {
+					b.Bingo = true
+				}
+
+				return
+			}
+		}
+	}
 }
 
 func remove(s []int, i int) []int {

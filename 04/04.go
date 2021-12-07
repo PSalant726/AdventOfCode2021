@@ -18,11 +18,9 @@ func main() {
 func part1(boards []*Board) int {
 	for _, number := range drawn {
 		for _, board := range boards {
-			if _, ok := board.Values[number]; ok {
-				board.Mark(number)
-				if board.Bingo {
-					return board.Score(number)
-				}
+			board.Mark(number)
+			if board.Bingo {
+				return board.Score(number)
 			}
 		}
 	}
@@ -40,12 +38,10 @@ func part2(boards []*Board) int {
 				continue
 			}
 
-			if _, ok := board.Values[number]; ok {
-				board.Mark(number)
-				if board.Bingo {
-					lastWinningBoard = board
-					lastDrawnNumber = number
-				}
+			board.Mark(number)
+			if board.Bingo {
+				lastWinningBoard = board
+				lastDrawnNumber = number
 			}
 		}
 	}

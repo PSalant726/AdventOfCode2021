@@ -1,9 +1,9 @@
 package main
 
 type Submarine struct {
-	Aim        int
 	Depth      int
 	Horizontal int
+	aim        int
 }
 
 func (s *Submarine) MoveForward(distance int) {
@@ -19,14 +19,14 @@ func (s *Submarine) MoveUp(distance int) {
 }
 
 func (s *Submarine) AimDown(distance int) {
-	s.Aim += distance
+	s.aim += distance
 }
 
 func (s *Submarine) AimUp(distance int) {
-	s.Aim -= distance
+	s.aim -= distance
 }
 
 func (s *Submarine) MoveForwardWithAim(distance int) {
-	s.Horizontal += distance
-	s.Depth += s.Aim * distance
+	s.MoveForward(distance)
+	s.Depth += s.aim * distance
 }

@@ -10,15 +10,14 @@ func main() {
 func part1() int {
 	sub := &Submarine{}
 
-	for _, step := range input {
-		distance, _ := step[1].(int)
-		switch step[0] {
+	for _, command := range input {
+		switch command.Direction {
 		case "forward":
-			sub.MoveForward(distance)
+			sub.MoveForward(command.Distance)
 		case "down":
-			sub.MoveDown(distance)
+			sub.MoveDown(command.Distance)
 		case "up":
-			sub.MoveUp(distance)
+			sub.MoveUp(command.Distance)
 		}
 	}
 
@@ -28,15 +27,14 @@ func part1() int {
 func part2() int {
 	sub := &Submarine{}
 
-	for _, step := range input {
-		distance, _ := step[1].(int)
-		switch step[0] {
+	for _, command := range input {
+		switch command.Direction {
 		case "forward":
-			sub.MoveForwardWithAim(distance)
+			sub.MoveForwardWithAim(command.Distance)
 		case "down":
-			sub.AimDown(distance)
+			sub.AimDown(command.Distance)
 		case "up":
-			sub.AimUp(distance)
+			sub.AimUp(command.Distance)
 		}
 	}
 

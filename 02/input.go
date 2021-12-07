@@ -1,6 +1,11 @@
 package main
 
-var input = [][]interface{}{
+type Command struct {
+	Direction string
+	Distance  int
+}
+
+var input = []Command{
 	{"forward", 1},
 	{"down", 3},
 	{"down", 2},

@@ -1,40 +1,45 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 func main() {
-	fmt.Printf("Part 1: %d\n", part1())
+	riskSum, lowPoints := part1()
+
+	fmt.Printf("Part 1: %d\n", riskSum)
+	fmt.Printf("Part 2: %d\n", part2(lowPoints))
 }
 
-func part1() int {
+func part1() (int, []Point) {
 	var totalRisk int
+	var lowPoints []Point
 
 	for i, row := range input {
 		for j, height := range row {
-			var up, down, left, right Point
-			point := NewPoint(height)
+			point := NewPoint(height, j, i)
+			adjacents := point.Adjacents(input)
 
-			if i > 0 {
-				up = NewPoint(input[i-1][j])
-			}
-
-			if i < len(input)-1 {
-				down = NewPoint(input[i+1][j])
-			}
-
-			if j > 0 {
-				left = NewPoint(row[j-1])
-			}
-
-			if j < len(row)-1 {
-				right = NewPoint(row[j+1])
-			}
-
-			if point.LowPoint(up, down, left, right) {
+			if point.LowPoint(adjacents...) {
 				totalRisk += height + 1
+				lowPoints = append(lowPoints, point)
 			}
 		}
 	}
 
-	return totalRisk
+	return totalRisk, lowPoints
+}
+
+func part2(lowPoints []Point) int {
+	basins := make([]int, len(lowPoints))
+
+	for i, lowPoint := range lowPoints {
+		basins[i] = lowPoint.BasinSize(input, map[Point]struct{}{})
+	}
+
+	sort.Ints(basins)
+	basins = basins[len(basins)-3:]
+
+	return basins[0] * basins[1] * basins[2]
 }
